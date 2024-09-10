@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hive Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .navbar {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           background-color: rgba(241, 198, 105, 0.979);
+           padding: 10px 0;
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           z-index: 1000;
+        }
+
+        .navbar ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+        }
+
+        .navbar li {
+          margin: 0 25px;
+        }
+
+        .navbar a {
+          text-decoration: none;
+          color: #000;
+          font-weight: bold;
+          font-size: 16px;
+          transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+          color: #FFA500;
+        }
+        .container {
+            width: 92%;
+            padding: 50px;
+            background-color: rgba(255, 136, 0, 0.808);
+            text-align: center;
+            background: linear-gradient(135deg, #f55920, #ec940f); /* gradient linear diagonal (135 degrees) */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* shape effect (shadow) */
+            border: 3px solid #ffffff; /* shape effect (border) */
+        }
+        .container h1{
+          color:#f0f0f0;
+          font-family: "Arial Black", Gadget, sans-serif;
+          font-size: 40px; /* adjust the size as needed */
+          text-shadow: 1px 1px 3px rgba(255, 254, 254, 0.5); 
+        }
+
+        .container h2{
+          color:#020202;
+          font-family: "Arial Black", Gadget, sans-serif;
+          font-size: 20px; /* adjust the size as needed */
+          text-shadow: 1px 1px 3px rgba(255, 254, 254, 0.5);
+        }
+
+
+        .hives-section {
+            width: 60%;
+            margin: 10px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+        }
+        .hive {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+        }
+        .hive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .hive-header h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+        .status {
+            background-color: green;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .location {
+            font-size: 14px;
+            color: #555;
+        }
+        .edit-icon {
+            cursor: pointer;
+            font-size: 18px;
+            color: #888;
+        }
+        .horizontal-line {
+            border-bottom: 2px solid #ccc;
+            margin: 15px 0;
+        }
+        .hive-details {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px; /* Reduced space */
+        }
+        .hive-details div {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .hive-details img {
+            width: 20px;
+            height: 20px;
+        }
+        .add-hive {
+            display: flex;
+            justify-content: flex-end;
+            margin: 20px;
+        }
+        .add-hive-btn {
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .form-popup {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 15px;
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-container input, .form-container select {
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            padding: 10px;
+            background-color: rgb(248, 164, 8);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container .cancel-btn {
+            background-color: rgb(161, 103, 16);
+        }
+        .number-input {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .number-input button {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            background-color: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+  <div class="navbar">
+    <img src="/images/logo.png" alt="Bee Smart" style="width: 100px; height: auto; margin-left: 20px;">
+    <ul>
+      <li><a href="/index.html#home">Home</a></li> <!-- Navigate to home section -->
+      <li><a href="/index.html#dashboard">Dashboard</a></li>
+      <li><a href="/index.html#maintenance">Maintenance</a></li>
+      <li><a href="/index.html#contact">Contact</a></li>
+    </ul>
+</div>
+<div class="container">
+  <h1>Hive details</h1>
+    <h2>Total Hives: <span id="totalHives">13</span></h2>
+</div>
+
+<div class="hives-section" id="hivesSection">
+    <!-- Hive details will be dynamically added here -->
+</div>
+
+<div class="add-hive">
+    <button class="add-hive-btn" onclick="openForm('add')">+</button>
+</div>
+
+<!-- Edit and Add Forms -->
+<div class="form-popup" id="editForm">
+    <form class="form-container">
+        <h3>Edit Hive</h3>
+        <label>Temperature</label>
+        <div class="number-input">
+            <button type="button" onclick="decreaseValue('editTemp')">-</button>
+            <input type="text" id="editTemp" readonly>
+            <button type="button" onclick="increaseValue('editTemp')">+</button>
+        </div>
+        <label>Humidity</label>
+        <div class="number-input">
+            <button type="button" onclick="decreaseValue('editHumidity')">-</button>
+            <input type="text" id="editHumidity" readonly>
+            <button type="button" onclick="increaseValue('editHumidity')">+</button>
+        </div>
+        <label>Weight</label>
+        <div class="number-input">
+            <button type="button" onclick="decreaseValue('editWeight')">-</button>
+            <input type="text" id="editWeight" readonly>
+            <button type="button" onclick="increaseValue('editWeight')">+</button>
+        </div>
+        <label>Health Status</label>
+        <select id="editStatus">
+            <option value="Healthy">Healthy</option>
+            <option value="Unhealthy">Unhealthy</option>
+        </select>
+        <button type="button" onclick="saveEdit()">Save</button>
+        <button type="button" class="cancel-btn" onclick="closeForm('edit')">Cancel</button>
+    </form>
+</div>
+
+<div class="form-popup" id="addForm">
+    <form class="form-container">
+        <h3>Add New Hive</h3>
+        <label>Hive Number</label>
+        <input type="text" id="addNumber">
+        <label>Temperature</label>
+        <div class="number-input">
+            <button type="button" onclick="decreaseValue('addTemp')">-</button>
+            <input type="text" id="addTemp" value="30" readonly>
+            <button type="button" onclick="increaseValue('addTemp')">+</button>
+        </div>
+        <label>Humidity</label>
+        <div class="number-input">
+            <button type="button" onclick="decreaseValue('addHumidity')">-</button>
+            <input type="text" id="addHumidity" value="40" readonly>
+            <button type="button" onclick="increaseValue('addHumidity')">+</button>
+        </div>
+        <label>Weight</label>
+        <div class="number-input">
+            <button type="button" onclick="decreaseValue('addWeight')">-</button>
+            <input type="text" id="addWeight" value="10" readonly>
+            <button type="button" onclick="increaseValue('addWeight')">+</button>
+        </div>
+        <label>Health Status</label>
+        <select id="addStatus">
+            <option value="Healthy">Healthy</option>
+            <option value="Unhealthy">Unhealthy</option>
+        </select>
+        <label>Location</label>
+        <select id="addLocation">
+            <option value="Akkaraipattu">Akkaraipattu</option>
+            <option value="Thirukovil">Thirukovil</option>
+            <option value="Kalmunai">Kalmunai</option>
+            <option value="Batticaloa">Batticaloa</option>
+            <option value="Trincomalee">Trincomalee</option>
+        </select>
+        <button type="button" onclick="saveNewHive()">Add Hive</button>
+        <button type="button" class="cancel-btn" onclick="closeForm('add')">Cancel</button>
+    </form>
+</div>
+
+<script>
+    let hives = [
+        {number: '001', status: 'Healthy', location: 'Akkaraipattu', temperature: '30°C', humidity: '44%', weight: '15kg'},
+        {number: '002', status: 'Healthy', location: 'Akkaraipattu', temperature: '35°C', humidity: '34%', weight: '19kg'},
+        {number: '003', status: 'Unhealthy', location: 'Kalmunai', temperature: '15°C', humidity: '24%', weight: '9kg'},
+        {number: '004', status: 'Healthy', location: 'Kalmunai', temperature: '34°C', humidity: '44%', weight: '15kg'},
+        {number: '005', status: 'Healthy', location: 'Kalmunai', temperature: '35°C', humidity: '34%', weight: '15kg'},
+        {number: '006', status: 'Healthy', location: 'Batticaloa', temperature: '32°C', humidity: '24%', weight: '12kg'},
+        {number: '007', status: 'Healthy', location: 'Batticaloa', temperature: '30°C', humidity: '49%', weight: '17kg'},
+        {number: '008', status: 'Healthy', location: 'Thirukovil', temperature: '35°C', humidity: '34%', weight: '19kg'},
+        {number: '009', status: 'Healthy', location: 'Thirukovil', temperature: '15°C', humidity: '24%', weight: '11kg'},
+        {number: '010', status: 'Healthy', location: 'Thirukovil', temperature: '34°C', humidity: '44%', weight: '12kg'},
+        {number: '011', status: 'Healthy', location: 'Trincomalee', temperature: '35°C', humidity: '34%', weight: '15kg'},
+        {number: '012', status: 'Healthy', location: 'Trincomalee', temperature: '32°C', humidity: '24%', weight: '12kg'},
+        {number: '013', status: 'unhealthy', location: 'Trincomalee', temperature: '12°C', humidity: '24%', weight: '12kg'}
+    ];
+    let currentEditIndex = null;
+
+    function loadHives() {
+        const hivesSection = document.getElementById('hivesSection');
+        hivesSection.innerHTML = ''; 
+        hives.forEach((hive, index) => {
+            hivesSection.innerHTML += `
+                <div class="hive" id="hive-${index}">
+                    <div class="hive-header">
+                        <h3>Hive No: ${hive.number}</h3>
+                        <div class="status">${hive.status}</div>
+                        <div class="location">${hive.location}</div>
+                        <span class="edit-icon" onclick="openForm('edit', ${index})">✏️</span>
+                    </div>
+                    <div class="horizontal-line"></div>
+                    <div class="hive-details">
+                        <div><img src="/images/tem.png" alt="Temperature"> Temperature: ${hive.temperature}</div>
+                        <div><img src="/images/hum.jpg" alt="Humidity"> Humidity: ${hive.humidity}</div>
+                        <div><img src="/images/wei.png" alt="Weight"> Weight: ${hive.weight}</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function openForm(type, index = null) {
+        if (type === 'edit') {
+            document.getElementById('editForm').style.display = 'block';
+            currentEditIndex = index;
+            document.getElementById('editTemp').value = hives[index].temperature.replace('°C', '');
+            document.getElementById('editHumidity').value = hives[index].humidity.replace('%', '');
+            document.getElementById('editWeight').value = hives[index].weight.replace('kg', '');
+            document.getElementById('editStatus').value = hives[index].status;
+        } else {
+            document.getElementById('addForm').style.display = 'block';
+        }
+    }
+
+    function closeForm(type) {
+        if (type === 'edit') {
+            document.getElementById('editForm').style.display = 'none';
+        } else {
+            document.getElementById('addForm').style.display = 'none';
+        }
+    }
+
+    function saveEdit() {
+        hives[currentEditIndex].temperature = document.getElementById('editTemp').value + '°C';
+        hives[currentEditIndex].humidity = document.getElementById('editHumidity').value + '%';
+        hives[currentEditIndex].weight = document.getElementById('editWeight').value + 'kg';
+        hives[currentEditIndex].status = document.getElementById('editStatus').value;
+        loadHives();
+        closeForm('edit');
+    }
+
+    function saveNewHive() {
+        const newHive = {
+            number: document.getElementById('addNumber').value,
+            temperature: document.getElementById('addTemp').value + '°C',
+            humidity: document.getElementById('addHumidity').value + '%',
+            weight: document.getElementById('addWeight').value + 'kg',
+            status: document.getElementById('addStatus').value,
+            location: document.getElementById('addLocation').value
+        };
+        hives.push(newHive);
+        document.getElementById('totalHives').innerText = hives.length;
+        loadHives();
+        closeForm('add');
+    }
+
+    function increaseValue(field) {
+        const input = document.getElementById(field);
+        input.value = parseInt(input.value) + 1;
+    }
+
+    function decreaseValue(field) {
+        const input = document.getElementById(field);
+        if (parseInt(input.value) > 0) {
+            input.value = parseInt(input.value) - 1;
+        }
+    }
+
+    loadHives();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

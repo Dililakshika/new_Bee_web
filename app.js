@@ -36,6 +36,8 @@ app.get('/', (req, res) => {
   res.render('index.html'); // Main page
 });
 
+
+
 app.get('/login', (req, res) => {
   res.render('login.html'); // Login page
 });
@@ -56,7 +58,9 @@ app.get('/location-search', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'Location-search.html'));
 });
 
-
+app.get('/hive-details', (req, res) => {
+  res.sendFile(__dirname + '/views/hive-details.html');
+});
 
 app.get(['/', '/home', '/dashboard', '/maintenance', '/contact'], (req, res) => {
   res.sendFile(path.join(__dirname, 'views/index.html'));
@@ -103,6 +107,35 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.get('/api/hives', async (req, res) => {
+  try {
+      const hives = await Hive.find();
+      res.json(hives);
+  } catch (error) {
+      res.status(500).json({ message: error.message });
+  }
+});
+
+// Add a new hive
+app.post('/api/hives', async (req, res) => {
+  const hive = new Hive(req.body);
+  try {
+      await hive.save();
+      res.status(201).json(hive);
+  } catch (error) {
+      res.status(400).json({ message: error.message });
+  }
+});
+
+// Edit a hive
+app.put('/api/hives/:id', async (req, res) => {
+  try {
+      const hive = await Hive.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      res.json(hive);
+  } catch (error) {
+      res.status(400).json({ message: error.message });
+  }
+});
 
 
 // Database connection
@@ -112,8 +145,8 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
+  
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
