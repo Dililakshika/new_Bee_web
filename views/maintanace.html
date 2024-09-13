@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beekeeping Maintenance</title>
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Bahnschrift+Condensed&family=Franklin+Gothic+Heavy&display=swap');
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            color: #0a0a0a;
+            margin: 0;
+           
+        }
+        .navbar {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           background-color: rgba(253, 253, 253, 0.979);
+           padding: 8px 0;
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           z-index: 1000;
+        }
+
+        .navbar ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+        }
+
+        .navbar li {
+          margin: 0 25px;
+        }
+
+        .navbar a {
+          text-decoration: none;
+          color: #000;
+          font-weight: bold;
+          font-size: 16px;
+          transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+          color: #FFA500;
+        }
+
+        .container {
+            width: 99.5%;
+            margin-top: 70px;
+            padding: 20px 0px;
+            background-color: rgba(255, 136, 0, 0.808);
+            text-align: center;
+            background: linear-gradient(135deg, #f55920, #ec940f); /* gradient linear diagonal (135 degrees) */
+            border: 3px solid #ffffff; /* shape effect (border) */
+        }
+        .container h1{
+          color:#f0f0f0;
+          font-family: "Arial Black", Gadget, sans-serif;
+          font-size: 40px; /* adjust the size as needed */
+          text-shadow: 1px 1px 3px rgba(255, 254, 254, 0.5); 
+        }
+
+        .container1 {
+            margin: auto;
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            width: 90%;
+            
+        }
+        
+        h2 {
+            text-align: center;
+            color: #f5a623;
+        }
+        .section {
+            margin-left: 10px;
+            width: 80%;
+        }
+        .section h3 {
+            color: #fc9b0a;
+            font-size: 25px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            font-weight: bold;
+        }
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .btn {
+            background-color: #f58210;
+            color: white;
+            padding: 8px 11px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #d48417;
+        }
+        .log {
+            background-color: #e5e5f1;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            width: 50%;
+        }
+        
+        .log p input[type="checkbox"] {
+            margin-right: 30px;
+        }
+        
+        .clear-btn {
+            background-color: #e23905;
+            color: white;
+            padding: 8px 11px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+        .clear-btn:hover {
+            background-color: #7e2206;
+        }
+        .select-all-btn {
+            background-color: #0c6604;
+            color: white;
+            padding: 8px 11px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+        .select-all-btn:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+            margin-top: 5px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="/images/logo.png" alt="Bee Smart" style="width: 100px; height: auto; margin-left: 20px;">
+        <ul>
+          <li><a href="/index.html#home">Home</a></li> <!-- Navigate to home section -->
+          <li><a href="/index.html#dashboard">Dashboard</a></li>
+          <li><a href="/index.html#maintenance">Maintenance</a></li>
+          <li><a href="/index.html#contact">Contact</a></li>
+        </ul>
+    </div>
+    
+    <div class="container">
+        <h1>Hive Maintanance</h1>
+      </div>
+      
+
+        <!-- Hive Inspection Reports -->
+        <div class="container1">
+        <div class="section">
+            <h3>Hive Inspection Report</h3>
+            
+            <div class="input-group">
+                <label for="inspection-notes">Inspection Notes</label>
+                <textarea id="inspection-notes" rows="4" placeholder="Describe hive condition"></textarea>
+                <span class="error-message" id="inspection-error">Please fill out the inspection notes.</span>
+            </div>
+            <div id="inspection-log" class="log"></div>
+            <button class="btn" onclick="saveInspection()">Save </button>
+            <button class="clear-btn" onclick="clearSelected('inspection-log', 'inspectionData')">Delete Selected Reports</button>
+            <button class="select-all-btn" onclick="selectAll('inspection-log')">Select All</button>
+        </div>    
+        </div>
+
+        <!-- Task Scheduling -->
+        <div class="container1">
+        <div class="section">
+            <h3>Task Scheduling</h3>
+            <div class="input-group">
+                <label for="task-name">Task Name</label>
+                <input type="text" id="task-name" placeholder="e.g., Hive Inspection">
+                <span class="error-message" id="task-error">Please fill out the task name and date.</span>
+            </div>
+            <div class="input-group">
+                <label for="task-date">Date</label>
+                <input type="date" id="task-date">
+            </div>
+            <div id="task-log" class="log"></div>
+            <button class="btn" onclick="scheduleTask()">Schedule Task</button>
+            <button class="clear-btn" onclick="clearSelected('task-log', 'taskData')">Delete Selected Tasks</button>
+            <button class="select-all-btn" onclick="selectAll('task-log')">Select All</button>
+            
+        </div>
+        </div>
+
+        <!-- Maintenance Logs -->
+        <div class="container1">
+        <div class="section">
+            <h3>Maintenance Logs</h3>
+            <div class="input-group">
+                <label for="maintenance-notes">Maintenance Notes</label>
+                <textarea id="maintenance-notes" rows="4" placeholder="Describe maintenance activity, repairs, etc."></textarea>
+                <span class="error-message" id="maintenance-error">Please fill out the maintenance notes.</span>
+            </div>
+            <div id="maintenance-log" class="log"></div>
+            <button class="btn" onclick="logMaintenance()">Log Maintenance</button>
+            <button class="clear-btn" onclick="clearSelected('maintenance-log', 'maintenanceData')">Delete Selected Logs</button>
+            <button class="select-all-btn" onclick="selectAll('maintenance-log')">Select All</button>
+            
+        </div>
+        </div>
+
+        <!-- Equipment Tracking -->
+        <div class="container1">
+        <div class="section">
+            <h3>Equipment Tracking</h3>
+            <div class="input-group">
+                <label for="equipment-name">Equipment Name</label>
+                <input type="text" id="equipment-name" placeholder="e.g., Smoker, Gloves">
+                <span class="error-message" id="equipment-error">Please fill out the equipment name and status.</span>
+            </div>
+            <div class="input-group">
+                <label for="equipment-status">Status</label>
+                <input type="text" id="equipment-status" placeholder="e.g., In Use, Needs Repair">
+            </div>
+            <div id="equipment-log" class="log"></div>
+            <button class="btn" onclick="trackEquipment()">Track Equipment</button>
+            <button class="clear-btn" onclick="clearSelected('equipment-log', 'equipmentData')">Delete Selected Equipment</button>
+            <button class="select-all-btn" onclick="selectAll('equipment-log')">Select All</button>
+           
+        </div>
+        </div>
+   
+
+    <script>
+        // Load saved data from localStorage
+        function loadSavedData() {
+        document.getElementById('inspection-log').innerHTML = localStorage.getItem('inspectionData') || '';
+        document.getElementById('task-log').innerHTML = localStorage.getItem('taskData') || '';
+        document.getElementById('maintenance-log').innerHTML = localStorage.getItem('maintenanceData') || '';
+        document.getElementById('equipment-log').innerHTML = localStorage.getItem('equipmentData') || '';
+    }
+
+        // Save Hive Inspection Report
+        function saveInspection() {
+            var notes = document.getElementById('inspection-notes').value;
+            var errorMessage = document.getElementById('inspection-error');
+            
+            if (!notes.trim()) {
+                errorMessage.style.display = 'block';
+                return;
+            } else {
+                errorMessage.style.display = 'none';
+            }
+
+            var log = document.getElementById('inspection-log');
+            var newEntry = '<p><input type="checkbox"><strong>Inspection:</strong> ' + notes + '</p>';
+            log.innerHTML += newEntry;
+            localStorage.setItem('inspectionData', log.innerHTML);
+            document.getElementById('inspection-notes').value = ''; // Clear input
+        }
+
+        // Save Task Scheduling
+        function scheduleTask() {
+    var task = document.getElementById('task-name').value;
+    var date = document.getElementById('task-date').value;
+    var errorMessage = document.getElementById('task-error');
+    
+    if (!task.trim() || !date) {
+        errorMessage.style.display = 'block';
+        return;
+    } else {
+        errorMessage.style.display = 'none';
+    }
+
+    var log = document.getElementById('task-log');
+    var newEntry = '<p><input type="checkbox"><strong>Task:</strong> ' + task + ' on ' + date + '</p>';
+    log.innerHTML += newEntry;
+    localStorage.setItem('taskData', log.innerHTML);
+    document.getElementById('task-name').value = ''; // Clear input
+    document.getElementById('task-date').value = ''; // Clear input 
+    }
+
+
+    // Track Equipment
+    function trackEquipment() {
+        var name = document.getElementById('equipment-name').value;
+        var status = document.getElementById('equipment-status').value;
+        var errorMessage = document.getElementById('equipment-error');
+        
+        if (!name.trim() || !status.trim()) {
+            errorMessage.style.display = 'block';
+            return;
+        } else {
+            errorMessage.style.display = 'none';
+        }
+
+        var log = document.getElementById('equipment-log');
+        var newEntry = '<p><input type="checkbox"><strong>Equipment:</strong> ' + name + ' (' + status + ')</p>';
+        log.innerHTML += newEntry;
+        localStorage.setItem('equipmentData', log.innerHTML);
+        document.getElementById('equipment-name').value = ''; // Clear input
+        document.getElementById('equipment-status').value = ''; // Clear input
+    }
+
+    // Clear selected entries
+    function clearSelected(logId, storageKey) {
+        var log = document.getElementById(logId);
+        var checkboxes = log.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            if (checkbox.checked) {
+                checkbox.parentElement.remove();
+            }
+        });
+        localStorage.setItem(storageKey, log.innerHTML);
+    }
+
+    // Select all entries
+    function selectAll(logId) {
+        var log = document.getElementById(logId);
+        var checkboxes = log.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = true;
+        });
+    }
+
+    // Load saved data when the page is loaded
+    window.onload = loadSavedData;
+</script>
+</body>
+</html>
+

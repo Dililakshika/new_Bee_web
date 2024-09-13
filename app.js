@@ -36,8 +36,6 @@ app.get('/', (req, res) => {
   res.render('index.html'); // Main page
 });
 
-
-
 app.get('/login', (req, res) => {
   res.render('login.html'); // Login page
 });
@@ -46,16 +44,16 @@ app.get('/register', (req, res) => {
   res.render('register.html'); // Register page
 });
 
-app.get('/location-search', (req, res) => {
+app.get('/maintanace', (req, res) => {
   if (req.session.userId) {
-    res.render('location-search.html'); // Location search page
+    res.render('maintanace.html'); 
   } else {
     res.redirect('/login'); // Redirect to login if not authenticated
   }
 });
 
-app.get('/location-search', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'Location-search.html'));
+app.get('/maintanace', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'maintanace.html'));
 });
 
 app.get('/hive-details', (req, res) => {
@@ -86,7 +84,7 @@ app.post('/login', async (req, res) => {
 
     if (user) {
       req.session.userId = user._id; // Store user ID in session
-      res.redirect('/location-search'); // Redirect to location search page
+      res.redirect('/maintanace'); // Redirect to location search page
     } else {
       res.render('login.html', { error: 'Invalid email or password' });
     }
@@ -101,7 +99,7 @@ app.post('/login', async (req, res) => {
   const user = await User.findOne({ email, password });
   if (user) {
       req.session.userId = user._id;
-      res.redirect('/location-search');
+      res.redirect('/maintanace');
   } else {
       res.render('login.html', { error: 'Invalid email or password' });
   }

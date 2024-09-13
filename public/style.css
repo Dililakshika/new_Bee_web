@@ -19,8 +19,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(241, 198, 105, 0.979);
-    padding: 10px 0;
+    background-color: rgba(253, 253, 253, 0.979);
+    padding: 5px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -49,6 +49,61 @@
 
 .navbar a:hover {
     color: #FFA500;
+}
+
+.contact-section {
+    background-color: #000;
+    color: #fff;
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.contact-section h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #f1ebeb;
+}
+
+.contact-details {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.contact-item {
+    flex: 1 1 200px;
+    margin: 20px;
+    position: relative;
+    padding: 0 20px;
+}
+
+.contact-item h3 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+
+}
+
+.contact-item p {
+    font-size: 1em;
+    margin: 0;
+    line-height: 1.6;
+}
+.contact-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background-color: #fff;
+}
+
+@media (max-width: 768px) {
+    .contact-item:not(:last-child)::after {
+        display: none;
+    }
 }
 
 .container {
