@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Hive Details</title>
+    <style>
+        /* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container */
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px; /* Set a fixed width */
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+.edit-hive-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="number"],
+select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Button Styles */
+.btn {
+    padding: 10px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #45a049; /* Darker green */
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        width: 90%; /* Adjust width on small screens */
+    }
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Hive Details</h1>
+        <form action="/update-hive" method="POST" class="edit-hive-form">
+            <input type="hidden" name="hive_no" value="<%= hive.hive_no %>">
+            
+            <div class="form-group">
+                <label for="temperature">Temperature:</label>
+                <input type="number" name="temperature" value="<%= hive.temperature %>" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="humidity">Humidity:</label>
+                <input type="number" name="humidity" value="<%= hive.humidity %>" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="weight">Weight:</label>
+                <input type="number" name="weight" value="<%= hive.weight %>" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="health_status">Health Status:</label>
+                <select name="health_status">
+                    <option value="Healthy" <%= hive.health_status === 'Healthy' ? 'selected' : '' %>>Healthy</option>
+                    <option value="Unhealthy" <%= hive.health_status === 'Unhealthy' ? 'selected' : '' %>>Unhealthy</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="active_status">Active Status:</label>
+                <select name="active_status">
+                    <option value="Active" <%= hive.active_status === 'Active' ? 'selected' : '' %>>Active</option>
+                    <option value="Deactive" <%= hive.active_status === 'Deactive' ? 'selected' : '' %>>Deactive</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bees_in">Bees In:</label>
+                <input type="number" name="bees_in" value="<%= hive.bees_in %>" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="bees_out">Bees Out:</label>
+                <input type="number" name="bees_out" value="<%= hive.bees_out %>" required>
+            </div>
+
+            <button type="submit" class="btn">Save Changes</button>
+        </form>
+    </div>
+</body>
+</html>

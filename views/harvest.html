@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harvest</title>
+    <style>
+ 
+
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .navbar {
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           background-color: rgba(253, 253, 253, 0.979);
+           padding: 7px 0;
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           z-index: 1000;
+        }
+
+        .navbar ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+        }
+
+        .navbar li {
+          margin: 0 25px;
+        }
+
+        .navbar a {
+          text-decoration: none;
+          color: #000;
+          font-weight: bold;
+          font-size: 15px;
+          transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+          color: #FFA500;
+        }
+
+        .container1 {
+            width: 99.5%;
+            margin-top: 60px;
+            padding: 20px 0px;
+            background-color: rgba(255, 136, 0, 0.808);
+            text-align: center;
+            background: linear-gradient(135deg, #f55920, #ec940f); /* gradient linear diagonal (135 degrees) */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* shape effect (shadow) */
+            border: 3px solid #ffffff; /* shape effect (border) */
+        }
+        .container1 h1{
+          color:#f0f0f0;
+          font-family: "Arial Black", Gadget, sans-serif;
+          font-size: 40px; /* adjust the size as needed */
+          text-shadow: 1px 1px 3px rgba(255, 254, 254, 0.5); 
+        }
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1300px;
+    margin: 40px auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+/* Left Side: Video */
+.video-container {
+    width: 42%;
+    margin-top: 60px;
+}
+
+video {
+    width: 100%;
+    height: auto;
+    
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Right Side: Text Content */
+.content {
+    width: 55%;
+}
+
+.content p {
+    font-size: 1em;
+    margin-bottom: 20px;
+    line-height: 1.8;
+    color: #302f2f;
+    text-align: justify;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    .video-container, .content {
+        width: 100%;
+    }
+
+    .video-container {
+        margin-bottom: 50px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <img src="/images/logo.png" alt="Bee Smart" style="width: 100px; height: auto; margin-left: 20px;">
+        <ul>
+          <li><a href="/#home">Home</a></li> <!-- Navigate to home section -->
+          <li><a href="/#dashboard">Dashboard</a></li>
+          <li><a href="/#contact">Contact</a></li> 
+          
+        </ul>
+    </div>
+    <div class="container1">
+        <h1>Harvest</h1>
+          
+      </div>
+    <div class="container">
+        
+        <div class="video-container">
+            
+            <video controls autoplay muted>
+                <source src="/videos/857124-hd_1280_720_24fps.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <!-- Right Side: Text content -->
+        <div class="content">
+            <p>Honey harvesting is a crucial part of beekeeping that involves collecting the honey produced by bees after the honeycomb cells are fully capped with beeswax. This process ensures that the honey is ripe and has the correct moisture content, usually around 17-18%, preventing fermentation. The best time to harvest is late summer or early fall, after the honey flow season, and during warm, sunny days when the bees are most active outside the hive. The procedure starts with preparing the necessary tools, such as a bee suit, smoker, and honey extractor, to safely access the hive. After calming the bees with smoke, the frames filled with honey are removed, and the honey is extracted using a spinning tool before being filtered and stored in clean jars.</p>
+            <p>To have a successful harvest, it’s important to ensure the hive is healthy, with enough honey left behind for the bees’ survival, typically 40-60 pounds. Additionally, minimizing hive disturbance and using clean equipment are key factors in maintaining the hive's health and producing high-quality honey. Understanding the ideal conditions and best practices, such as rotating frames and using a honey extractor, allows for a smooth and productive harvest.</p>
+        </div>
+    </div>
+</body>
+</html>
+
+
