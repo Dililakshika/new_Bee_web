@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit History</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+            overflow: hidden; /* Prevent scrolling due to hexagons */
+        }
+
+       
+
+        form {
+            background-color: #ffffff;
+            padding: 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            z-index: 10; /* Ensure form is above hexagons */
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+            padding: 7px;
+            margin-bottom: 15px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+        .button-container {
+    display: flex; /* Aligns items horizontally */
+    justify-content: space-between; /* Adds space between the buttons */
+}
+
+        button {
+            
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 15px;
+            display: inline-block; /* Place buttons side by side */
+    width: 48%; /* Adjust width so both fit on one line */
+    margin-right: 2%; /* Add some space between buttons */
+    text-align: center;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        form input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        @media (max-width: 600px) {
+            form {
+                padding: 15px;
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+
+    <form action="/update-history" method="POST">
+        <h1> Hive No: <%= history.hive_no %></h1>
+        <input type="hidden" name="id" value="<%= history.id %>">
+        <input type="hidden" name="hive_no" value="<%= history.hive_no %>">
+
+        <label for="temperature">Temperature:</label>
+        <input type="number" name="temperature" value="<%= history.temperature %>" required><br>
+
+        <label for="humidity">Humidity:</label>
+        <input type="number" name="humidity" value="<%= history.humidity %>" required><br>
+
+        <label for="weight">Weight:</label>
+        <input type="number" name="weight" value="<%= history.weight %>" required><br>
+
+        <label for="health_status">Health Status:</label>
+        <select name="health_status">
+            <option value="Healthy" <%= history.health_status === 'Healthy' ? 'selected' : '' %>>Healthy</option>
+            <option value="Unhealthy" <%= history.health_status === 'Unhealthy' ? 'selected' : '' %>>Unhealthy</option>
+        </select><br>
+
+        <label for="active_status">Active Status:</label>
+        <select name="active_status">
+            <option value="Active" <%= history.active_status === 'Active' ? 'selected' : '' %>>Active</option>
+            <option value="Deactive" <%= history.active_status === 'Deactive' ? 'selected' : '' %>>Deactive</option>
+        </select><br>
+
+        <label for="bees_in">Bees In:</label>
+        <input type="number" name="bees_in" value="<%= history.bees_in %>" required><br>
+
+        <label for="bees_out">Bees Out:</label>
+        <input type="number" name="bees_out" value="<%= history.bees_out %>" required><br>
+
+        <div class="button-container">
+            <button type="submit">Update History</button>
+            <button type="button" onclick="window.history.back()">Back</button>
+        </div>
+    </form>
+</body>
+</html>
+
+
+
+
+
+

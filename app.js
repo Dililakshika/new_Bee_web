@@ -18,6 +18,9 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+// Middleware for JSON parsing
+app.use(express.json());
+
 
 // MySQL database connection
 const db = mysql.createConnection({
@@ -180,38 +183,92 @@ app.get('/edit-hive/:hive_no', isAuthenticated, (req, res) => {
   });
 });
 
-// Route to handle the update of hive details
-app.post('/update-hive', (req, res) => {
-  const { hive_no, temperature, humidity, weight, health_status, active_status, bees_in, bees_out } = req.body;
-  const updated_at = new Date();  // Capture the current date and time
+// Route to get edit history for a hive
+app.get('/view-history/:hive_no', isAuthenticated, (req, res) => {
+  const hiveNo = req.params.hive_no;
 
-  // Update the hive details
-  const updateQuery = `
-      UPDATE hive_details
-      SET temperature = ?, humidity = ?, weight = ?, health_status = ?, active_status = ?, bees_in = ?, bees_out = ?, last_updated = NOW()
-      WHERE hive_no = ?
-  `;
-
-  db.query(updateQuery, [temperature, humidity, weight, health_status, active_status, bees_in, bees_out, hive_no], (err, result) => {
+  const query = 'SELECT * FROM hive_update_history WHERE hive_no = ? ORDER BY updated_at DESC';
+  db.query(query, [hiveNo], (err, results) => {
       if (err) {
           console.error(err);
-          return res.status(500).send('Error updating hive data');
+          return res.status(500).send('Error retrieving hive history');
       }
 
-      // Optionally, save the update history in another table
-      const historyQuery = `
-          INSERT INTO hive_update_history (hive_no, updated_at, temperature, humidity, weight, health_status, active_status, bees_in, bees_out)
-          VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?)
-      `;
-
-      db.query(historyQuery, [hive_no, temperature, humidity, weight, health_status, active_status, bees_in, bees_out], (err) => {
-          if (err) {
-              console.error(err);
-          }
-          res.redirect('/hive-details'); // Redirect back to the hive details page
-      });
+      res.render('view-history', { history: results, hive_no: hiveNo });
   });
 });
+
+
+// Route to serve the form for editing a specific history entry
+app.get('/edit-history/:id', isAuthenticated, (req, res) => {
+  const id = req.params.id;
+
+  const query = 'SELECT * FROM hive_update_history WHERE id = ?';
+  db.query(query, [id], (err, results) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send('Error retrieving history data');
+      }
+
+      if (results.length > 0) {
+          res.render('edit-history', { history: results[0] });
+      } else {
+          res.status(404).send('History not found');
+      }
+  });
+});
+
+// Route to handle the update of historical records
+app.post('/update-history', (req, res) => {
+  const { id, temperature, humidity, weight, health_status, active_status, bees_in, bees_out } = req.body;
+
+  const query = `
+      UPDATE hive_update_history 
+      SET temperature = ?, humidity = ?, weight = ?, health_status = ?, active_status = ?, bees_in = ?, bees_out = ? 
+      WHERE id = ?`;
+  
+  db.query(query, [temperature, humidity, weight, health_status, active_status, bees_in, bees_out, id], (err) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).send('Error updating history');
+      }
+
+      res.redirect('/view-history/' + req.body.hive_no);
+  });
+});
+
+app.post('/update-hive', (req, res) => {
+  const { hive_no, temperature, humidity, weight, health_status, active_status, bees_in, bees_out } = req.body;
+
+  // Step 1: Save the current data into the history table
+  const historyQuery = `
+    INSERT INTO hive_update_history (hive_no, updated_at, temperature, humidity, weight, health_status, active_status, bees_in, bees_out) 
+    SELECT hive_no, NOW(), temperature, humidity, weight, health_status, active_status, bees_in, bees_out 
+    FROM hive_details WHERE hive_no = ?`;
+  
+  db.query(historyQuery, [hive_no], (err) => {
+    if (err) {
+        console.error(err);
+        return res.status(500).send('Error saving history');
+    }
+
+    // Step 2: Update the hive details in the main table
+    const updateQuery = `
+      UPDATE hive_details 
+      SET temperature = ?, humidity = ?, weight = ?, health_status = ?, active_status = ?, bees_in = ?, bees_out = ? 
+      WHERE hive_no = ?`;
+    
+    db.query(updateQuery, [temperature, humidity, weight, health_status, active_status, bees_in, bees_out, hive_no], (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).send('Error updating hive details');
+      }
+
+      res.redirect('/hive-details');
+    });
+  });
+});
+
 
 // POST route to add a new hive
 app.post('/add-hive', (req, res) => {
@@ -229,7 +286,6 @@ app.post('/add-hive', (req, res) => {
       res.redirect('/hive-details'); // Redirect back to the hive details page after the hive is added
   });
 });
-
 
 // Start the server
 const PORT = process.env.PORT || 3000;
