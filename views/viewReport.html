@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Maintenance Reports</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            display:flex;
+    justify-content: space-between;
+    background: linear-gradient(90deg, #ff7e00, #ffbb33);
+    padding: 0;
+    color: white;
+}
+
+.header img {
+    height: 280px;
+    width: 550px;
+    margin-right: 20px;
+    object-fit: cover;
+    clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
+}
+.header-content {
+    margin-right: 10; /* Ensure there is no extra margin pushing content to the right */
+    padding-right: 300px; 
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 3em;
+    margin-bottom: 80px;
+}
+
+.header > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.tabs {
+    display: flex;
+    gap: 40px;
+    margin-top: 10px; /* Adjust this to control the space between the h1 and tabs */
+}
+
+.tab {
+    margin: 0 15px;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    position: relative;
+}
+.tab:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -30px; /* Adjust the distance from the tab text */
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #fdfbfb; /* Color of the vertical line */
+}
+
+.tab.active {
+    color: black;
+    text-decoration: underline;
+}
+
+
+        .report-section {
+            display: none;
+            padding: 40px;
+            margin-left: 250px;
+        }
+
+        .report-section.active {
+            display: block;
+        }
+
+        .report-table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+           
+        }
+
+        .report-table th, .report-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .report-table th {
+            background-color: #f76612d7;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="/images/main.jpg" alt="Beekeeping Image">
+        <div class="header-content">
+            <h1>Maintenance Report</h1>
+            <div class="tabs">
+                <div class="tab active" onclick="showSection('daily')">Daily</div>
+                <div class="tab" onclick="showSection('weekly')">Weekly</div>
+                <div class="tab" onclick="showSection('monthly')">Monthly</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="report-section active" id="dailyReportsSection">
+        <table class="report-table" id="dailyReportsTable">
+            <thead>
+                <tr>
+                    <th>Hive Number</th>
+                    <th>Date</th>
+                    <th>Report Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Daily reports will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section" id="weeklyReportsSection">
+        <table class="report-table" id="weeklyReportsTable">
+            <thead>
+                <tr>
+                    <th>Hive Number</th>
+                    <th>Date</th>
+                    <th>Report Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Weekly reports will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="report-section" id="monthlyReportsSection">
+        <table class="report-table" id="monthlyReportsTable">
+            <thead>
+                <tr>
+                    <th>Hive Number</th>
+                    <th>Date</th>
+                    <th>Report Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Monthly reports will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.report-section').forEach(el => el.classList.remove('active'));
+            // Show the selected section
+            document.getElementById(section + 'ReportsSection').classList.add('active');
+
+            // Update tab styles
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showSection('${section}')"]`).classList.add('active');
+        }
+
+        // Function to fetch and display all reports
+        function loadReports() {
+            fetch('/getAllReports')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayReports(data.reports.filter(report => report.task_type === 'daily'), 'dailyReportsTable');
+                        displayReports(data.reports.filter(report => report.task_type === 'weekly'), 'weeklyReportsTable');
+                        displayReports(data.reports.filter(report => report.task_type === 'monthly'), 'monthlyReportsTable');
+                    } else {
+                        console.error('Failed to load reports.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function displayReports(reports, tableId) {
+            const tableBody = document.getElementById(tableId).querySelector('tbody');
+            tableBody.innerHTML = '';
+
+            reports.forEach(report => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${report.hive_no}</td>
+                    <td>${report.report_date}</td>
+                    <td>${report.report_content}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        window.onload = loadReports;
+    </script>
+
+</body>
+</html>
+
+
+
+

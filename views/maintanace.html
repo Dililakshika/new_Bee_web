@@ -202,6 +202,28 @@
         .task-list input[type="checkbox"] {
             margin-right: 10px;
         }
+
+        .view-report {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.view-report button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f2a900; /* Customize button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.view-report button:hover {
+    background-color: #d18b00; /* Hover effect */
+}
+
     </style>
 </head>
 <body>
@@ -232,6 +254,10 @@
         <div class="box monthly" onclick="openModal('monthly')">
             <h2>Monthly</h2>
         </div>
+    </div>
+
+    <div class="view-report">
+        <button onclick="viewReport()">View Report</button>
     </div>
 
     <!-- Daily Modal -->
@@ -294,8 +320,9 @@
             <div class="task-list" id="taskList">
                 <!-- Tasks will be dynamically inserted here -->
             </div>
-            <button onclick="markTasksDone()" style="flex: 1; margin-right: 10px;">Mark as Done</button>
+            <button onclick="markTasksDone()" style="flex: 1; margin-right: 10px;">Save</button>
             <button onclick="generateReport()" style="flex: 1;">Report</button>
+            <div id="messageContainer" style="margin-top: 20px; color: green; display: none;"></div>
         </div>
     </div>
 
@@ -373,8 +400,92 @@ function showTaskModal(hiveNo, mode) {
 
 // Mark tasks as done
 function markTasksDone() {
-    alert(`${currentMode.charAt(0).toUpperCase() + currentMode.slice(1)} tasks marked as done!`);
+    saveTasks();  // Calls saveTasks to send data to the server
+    displayMessage("Tasks saved successfully!");
 }
+
+// Display a message on the page
+function displayMessage(message) {
+    const messageContainer = document.getElementById('messageContainer');
+    messageContainer.innerText = message;
+    messageContainer.style.display = "block";
+    setTimeout(() => {
+        messageContainer.style.display = "none"; // Hide message after 3 seconds
+    }, 3000);
+}
+
+function collectTasks() {
+    const checkboxes = document.querySelectorAll('#taskList input[type="checkbox"]');
+    let tasks = [];
+    checkboxes.forEach(checkbox => {
+        if (checkbox.checked) {
+            tasks.push(checkbox.nextSibling.textContent.trim());
+        }
+    });
+    return tasks;
+}
+
+function saveTasks() {
+    const hiveNo = document.getElementById('hiveNoDisplay').innerText.split(': ')[1];
+    const taskType = currentMode;
+    let dateValue;
+
+    if (taskType === 'daily') {
+        dateValue = document.getElementById('dailyDate').value;
+    } else if (taskType === 'weekly') {
+        dateValue = document.getElementById('weeklyDate').value;
+    } else if (taskType === 'monthly') {
+        dateValue = document.getElementById('monthlyDate').value;
+    }
+
+    const tasks = collectTasks();
+
+    // Send data to backend using fetch or AJAX
+    const data = {
+        hiveNo: hiveNo,
+        taskType: taskType,
+        dateValue: dateValue,
+        tasks: tasks
+    };
+
+    fetch('/saveTasks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert('Tasks saved successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function generateReport() {
+    const hiveNo = document.getElementById('hiveNoDisplay').innerText.split(': ')[1];
+    const taskType = currentMode;
+    
+    // Redirect to report.html with hiveNo and taskType as URL parameters
+    window.location.href = `report.html?hiveNo=${hiveNo}&taskType=${taskType}`;
+}
+// Function to get URL parameters
+function getParameterByName(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+// View report function
+function viewReport() {
+    const hiveNo = getParameterByName('hiveNo');
+    const taskType = getParameterByName('taskType');
+    
+    // Redirect to a page to view the report or send a request to get the report details
+    window.location.href = `/viewReport?hiveNo=${hiveNo}&taskType=${taskType}`;
+}
+
 </script>
 
 </body>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hive Report</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.report-container {
+  text-align: center;
+}
+
+.hive-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.hive-circle {
+  width: 80px;
+  height: 80px;
+  background-color: #ffcc00;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  transition: transform 0.3s;
+}
+
+.hive-circle:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+  </style>
+</head>
+<body>
+  <div class="report-container">
+    <h1>Hive Report</h1>
+    <div class="hive-numbers" id="hiveNumbers">
+      <!-- Hive numbers will be dynamically added here -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+  fetch('http://localhost:3000/api/hives') // Replace with your API endpoint
+    .then(response => response.json())
+    .then(data => {
+      const hiveNumbersContainer = document.getElementById('hiveNumbers');
+
+      data.forEach(hive => {
+        const hiveCircle = document.createElement('div');
+        hiveCircle.classList.add('hive-circle');
+        hiveCircle.textContent = hive.hive_no; // Adjust based on your API response structure
+        hiveNumbersContainer.appendChild(hiveCircle);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching hive numbers:', error);
+    });
+});
+
+  </script>
+</body>
+</html>

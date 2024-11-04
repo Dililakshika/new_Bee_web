@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Report</title>
+    <style>
+        /* Basic styling for layout and form */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .report-section {
+            margin-top: 20px;
+        }
+
+        .report-section label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .report-section textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            resize: vertical;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .save-button {
+            background-color: #4CAF50;
+            color: #fff;
+        }
+
+        .view-button {
+            background-color: #007BFF;
+            color: #fff;
+        }
+
+        #messageContainer {
+            margin-top: 15px;
+            color: green;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Maintenance Report</h1>
+
+    <div class="report-section">
+        <label>Hive Number:</label>
+        <div id="hiveNumberDisplay"></div>
+
+        <label>Task Type:</label>
+        <div id="taskTypeDisplay"></div>
+    </div>
+
+    <div class="report-section">
+        <label for="reportContent">Report Content:</label>
+        <textarea id="reportContent" placeholder="Enter your report details here..."></textarea>
+    </div>
+
+    <div class="buttons">
+        <button class="save-button" onclick="saveReport()">Save Report</button>
+        <button class="view-button" onclick="viewReport()">View Report</button>
+    </div>
+
+    <div id="messageContainer"></div>
+</div>
+
+<script>
+// Function to get URL parameters
+function getParameterByName(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+// Display hive number and task type from URL parameters
+document.getElementById('hiveNumberDisplay').innerText = getParameterByName('hiveNo');
+document.getElementById('taskTypeDisplay').innerText = getParameterByName('taskType');
+
+// Save report function
+function saveReport() {
+    const hiveNo = getParameterByName('hiveNo');
+    const taskType = getParameterByName('taskType');
+    const reportContent = document.getElementById('reportContent').value;
+
+    const reportData = {
+        hive_no: hiveNo,
+        task_type: taskType,
+        report_content: reportContent
+    };
+
+    // Send report data to the backend
+    fetch('/saveReport', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            displayMessage("Report saved successfully!");
+        } else {
+            displayMessage("Failed to save report. Try again.");
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// Display a message
+function displayMessage(message) {
+    const messageContainer = document.getElementById('messageContainer');
+    messageContainer.innerText = message;
+    messageContainer.style.display = "block";
+    setTimeout(() => {
+        messageContainer.style.display = "none";
+    }, 3000);
+}
+
+// View report function
+function viewReport() {
+    const hiveNo = getParameterByName('hiveNo');
+    const taskType = getParameterByName('taskType');
+    
+    // Redirect to a page to view the report or send a request to get the report details
+    window.location.href = `/viewReport?hiveNo=${hiveNo}&taskType=${taskType}`;
+}
+
+</script>
+
+</body>
+</html>
+

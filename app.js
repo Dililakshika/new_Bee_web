@@ -154,6 +154,10 @@ app.get(['/', '/home', '/dashboard', '/contact'], (req, res) => {
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
+app.get('/hive-report', isAuthenticated, (req, res) => {
+  res.render('hive-report.html');
+});
+
 // Logout route
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {
@@ -286,6 +290,101 @@ app.post('/add-hive', (req, res) => {
       res.redirect('/hive-details'); // Redirect back to the hive details page after the hive is added
   });
 });
+
+app.post('/saveTasks', (req, res) => {
+  const { hiveNo, taskType, dateValue, tasks } = req.body;
+
+  const taskList = tasks.join(','); // Convert tasks array to a string
+  let query = '';
+  let queryValues = [];
+
+  if (taskType === 'daily') {
+      query = 'INSERT INTO hive_tasks (hive_no, task_type, task_date, task_list) VALUES (?, ?, ?, ?)';
+      queryValues = [hiveNo, taskType, dateValue, taskList];
+  } else if (taskType === 'weekly') {
+      query = 'INSERT INTO hive_tasks (hive_no, task_type, task_week, task_list) VALUES (?, ?, ?, ?)';
+      queryValues = [hiveNo, taskType, dateValue, taskList]; // weekly date in YYYY-WW format
+  } else if (taskType === 'monthly') {
+      query = 'INSERT INTO hive_tasks (hive_no, task_type, task_month, task_list) VALUES (?, ?, ?, ?)';
+      queryValues = [hiveNo, taskType, dateValue, taskList]; // monthly date in YYYY-MM format
+  }
+
+  db.query(query, queryValues, (err, result) => {
+      if (err) {
+          console.error('Error saving tasks:', err);
+          return res.status(500).json({ error: 'Failed to save tasks' });
+      } 
+  });
+});
+
+// Route to save the report
+app.post('/saveReport', (req, res) => {
+  const { hive_no, task_type, report_content } = req.body;
+
+  // Step 1: Retrieve the hive_task_id from the hive_tasks table
+  const getHiveTaskIdSql = 'SELECT id FROM hive_tasks WHERE hive_no = ? AND task_type = ?';
+  
+  db.query(getHiveTaskIdSql, [hive_no, task_type], (error, results) => {
+      if (error) {
+          console.error('Error retrieving hive_task_id:', error);
+          return res.json({ success: false });
+      }
+
+      if (results.length === 0) {
+          // No matching task found
+          return res.json({ success: false, message: 'No matching task found for the provided hive_no and task_type.' });
+      }
+
+      const hiveTaskId = results[0].id;
+
+      // Step 2: Insert the report into the hive_reports table
+      const insertReportSql = `
+          INSERT INTO hive_reports (hive_task_id, hive_no, task_type, report_content, report_date, created_at) 
+          VALUES (?, ?, ?, ?, NOW(), NOW())
+      `;
+
+      db.query(insertReportSql, [hiveTaskId, hive_no, task_type, report_content], (error, results) => {
+          if (error) {
+              console.error('Error saving report:', error);
+              return res.json({ success: false });
+          }
+          res.json({ success: true });
+      });
+  });
+});
+
+// Route to serve the view report page
+app.get('/viewReport', (req, res) => {
+  res.sendFile(__dirname + '/views/viewReport.html');
+});
+
+
+// Route to get all reports from the hive_reports table
+app.get('/getAllReports', (req, res) => {
+  // SQL query to fetch all reports from the table
+  const sql = 'SELECT * FROM hive_reports ORDER BY report_date DESC';
+  db.query(sql, (error, results) => {
+      if (error) {
+          console.error('Error fetching reports:', error);
+          return res.json({ success: false, message: 'Error fetching reports' });
+      }
+
+      // Send all the retrieved reports to the frontend
+      res.json({ success: true, reports: results });
+  });
+});
+
+// API endpoint to fetch hive numbers
+app.get('/api/hives', (req, res) => {
+  const query = 'SELECT hive_no FROM hive_details';
+  db.query(query, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: 'Error fetching hive numbers' });
+    }
+    res.json(results);
+  });
+});
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
