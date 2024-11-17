@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hive Report</title>
+  <style>
+    /* General styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #f0f5da, #e4b267);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header styles */
+    .header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+    }
+
+    .status span {
+      margin-left: 8px;
+      font-weight: bold;
+    }
+
+    .status .circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .status .active {
+      background-color: green;
+    }
+
+    .status .inactive {
+      background-color: red;
+    }
+
+    hr {
+      border: none;
+      height: 2px;
+      background: #ccc;
+      margin: 0;
+    }
+
+    /* Main layout */
+    .main-content {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    /* Left side: Metrics */
+    .metrics-section {
+      width: 20%;
+      padding: 10px;
+      margin-left: 50px;
+      margin-top: 40px;
+    }
+
+    .metric-item {
+      margin-bottom: 15px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .metric-item span {
+      font-weight: normal;
+      color: #555;
+    }
+
+    /* Right side: Report content */
+    .report-section {
+      width: 60%;
+      background: rgba(255, 255, 255, 0.3);
+      padding: 25px;
+    }
+    .report-section h1 {
+      font-size: 25px;
+      color: #111111;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .report-section h3 {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .report-box {
+      padding: 15px;
+      background-color: #fff;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      margin-left: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+
+      .metrics-section,
+      .report-section {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header Section -->
+  <div class="header">
+    <h2>Hive No: <span id="hiveNumber"></span></h2>
+    <h2 id="location"></h2>
+    <div class="status">
+      <div id="statusCircle" class="circle"></div>
+      <span id="status"></span>
+    </div>
+  </div>
+  <hr />
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Left Side: Metrics -->
+    <div class="metrics-section">
+      <div class="metric-item">
+        Temperature: <span id="temperature"></span>
+      </div>
+      <div class="metric-item">
+        Humidity: <span id="humidity"></span>
+      </div>
+      <div class="metric-item">
+        Weight: <span id="weight"></span>
+      </div>
+      <div class="metric-item">
+        Bees In: <span id="beesIn"></span>
+      </div>
+      <div class="metric-item">
+        Bees Out: <span id="beesOut"></span>
+      </div>
+    </div>
+
+    <!-- Right Side: Report Section -->
+    <div class="report-section">
+    <h1> Report</h1>
+      <h3>Daily</h3>
+      <div id="dailyReport" class="report-box"></div>
+
+      <h3>Weekly </h3>
+      <div id="weeklyReport" class="report-box"></div>
+
+      <h3>Monthly </h3>
+      <div id="monthlyReport" class="report-box"></div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const hiveNo = urlParams.get('hive_no');
+      document.getElementById('hiveNumber').textContent = hiveNo;
+
+      // Fetch hive details
+      fetch(`http://localhost:3000/api/hive-details?hive_no=${hiveNo}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('location').textContent = data.location;
+          document.getElementById('status').textContent = data.active_status === 'Active' ? 'Activated' : 'Deactivated';
+          document.getElementById('statusCircle').classList.add(data.active_status === 'Active' ? 'active' : 'inactive');
+          document.getElementById('temperature').textContent = `${data.temperature}°C`;
+          document.getElementById('humidity').textContent = `${data.humidity}%`;
+          document.getElementById('weight').textContent = `${data.weight} kg`;
+          document.getElementById('beesIn').textContent = data.bees_in;
+          document.getElementById('beesOut').textContent = data.bees_out;
+        })
+        .catch(error => console.error('Error fetching hive details:', error));
+
+      // Fetch hive reports
+      fetch(`http://localhost:3000/api/hive-reports?hive_no=${hiveNo}`)
+        .then(response => response.json())
+        .then(reports => {
+          reports.forEach(report => {
+            const reportContainer = document.getElementById(`${report.task_type}Report`);
+            const reportContent = document.createElement('p');
+            reportContent.textContent = report.report_content;
+            reportContainer.appendChild(reportContent);
+          });
+        })
+        .catch(error => console.error('Error fetching hive reports:', error));
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+  

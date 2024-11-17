@@ -7,52 +7,151 @@
   <title>Hive Report</title>
   <style>
     body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
-  margin: 0;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+      font-family: Arial, sans-serif;
+      background: url('/images/pic5.png') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(253, 253, 253, 0.979);
+    padding: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
 }
 
-.report-container {
-  text-align: center;
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-left: 650px;
 }
 
-.hive-numbers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+.navbar li {
+    margin: 0 35px;
 }
 
-.hive-circle {
-  width: 80px;
-  height: 80px;
-  background-color: #ffcc00;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  font-size: 18px;
-  font-weight: bold;
-  transition: transform 0.3s;
+.navbar a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s;
 }
 
-.hive-circle:hover {
-  transform: scale(1.1);
-  cursor: pointer;
+.navbar a:hover {
+    color: #FFA500;
+}
+.logout-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+    text-decoration: none;
 }
 
+.logout-icon img {
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.logout-icon:hover img {
+    transform: scale(1.1); /* Slight zoom-in on hover */
+}
+
+.logout-text {
+    position: absolute;
+    top: 50px; /* Adjust depending on the icon size */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background for the tooltip */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.logout-icon:hover .logout-text {
+    opacity: 1; /* Show tooltip on hover */
+}
+
+
+    .report-container {
+      text-align: center;
+    }
+
+    .hive-numbers {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1px;
+      margin-top: 20px;
+    }
+
+    .hive-hexagon {
+      width: 76px;
+      height: 53px;
+      background-color: #ff5100d7;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+      transition: transform 0.3s;
+      line-height: 1.5;
+    }
+
+    .hive-hexagon:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .hive-hexagon span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Staggered positioning */
+    .hive-hexagon:nth-child(odd) {
+      margin-top: 35px; /* Adjusts odd-numbered hexagons to be lower */
+    }
+
+    .hive-hexagon:nth-child(even) {
+      margin-top: 0; /* Keeps even-numbered hexagons higher */
+    }
   </style>
 </head>
 <body>
+  <div class="navbar">
+    <img src="/images/logo.png" alt="Bee Smart" style="width: 100px; height: auto; margin-left: 20px;">
+    <ul>
+        <li><a href="#home">Home</a></li> <!-- #home will scroll to the home section -->
+        <li><a href="#dashboard">Dashboard</a></li> <!-- #dashboard will scroll to the dashboard section -->
+        <li><a href="#contact">Contact</a></li> 
+    </ul>
+    <a href="/logout" class="logout-icon">
+        <img src="/images/logout.png" alt="Logout" style="width: 30px; height: 30px; margin-right: 20px;">
+        <span class="logout-text">Log Out</span>
+    </a>
+</div>
   <div class="report-container">
-    <h1>Hive Report</h1>
     <div class="hive-numbers" id="hiveNumbers">
       <!-- Hive numbers will be dynamically added here -->
     </div>
@@ -60,23 +159,36 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-  fetch('http://localhost:3000/api/hives') // Replace with your API endpoint
-    .then(response => response.json())
-    .then(data => {
-      const hiveNumbersContainer = document.getElementById('hiveNumbers');
+      fetch('http://localhost:3000/api/hives') // Replace with your API endpoint
+        .then(response => response.json())
+        .then(data => {
+          const hiveNumbersContainer = document.getElementById('hiveNumbers');
 
-      data.forEach(hive => {
-        const hiveCircle = document.createElement('div');
-        hiveCircle.classList.add('hive-circle');
-        hiveCircle.textContent = hive.hive_no; // Adjust based on your API response structure
-        hiveNumbersContainer.appendChild(hiveCircle);
-      });
-    })
-    .catch(error => {
-      console.error('Error fetching hive numbers:', error);
+          data.forEach(hive => {
+            const hiveHexagon = document.createElement('div');
+            hiveHexagon.classList.add('hive-hexagon');
+            
+
+            // Adding hive number inside a span to ensure visibility
+            const hiveNumber = document.createElement('span');
+            hiveNumber.textContent = hive.hive_no; // Adjust based on your API response structure
+            hiveHexagon.appendChild(hiveNumber);
+
+            hiveHexagon.addEventListener('click', () => {
+              // Redirect to new page with hive number as URL parameter
+              window.location.href = `hive-report-next.html?hive_no=${hive.hive_no}`;
+            });
+
+            hiveNumbersContainer.appendChild(hiveHexagon);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching hive numbers:', error);
+        });
     });
-});
-
   </script>
 </body>
 </html>
+
+
+

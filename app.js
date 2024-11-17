@@ -385,6 +385,24 @@ app.get('/api/hives', (req, res) => {
   });
 });
 
+app.get('/api/hive-details', (req, res) => {
+  const hiveNo = req.query.hive_no;
+  db.query('SELECT * FROM hive_details WHERE hive_no = ?', [hiveNo], (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results[0]);
+  });
+});
+
+app.get('/api/hive-reports', (req, res) => {
+  const hiveNo = req.query.hive_no;
+  db.query('SELECT * FROM hive_reports WHERE hive_no = ?', [hiveNo], (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+});
+
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
