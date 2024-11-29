@@ -5,103 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Hive Details</title>
     <style>
-        /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-/* Container */
-.container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 400px; /* Set a fixed width */
-}
-
-/* Heading */
-h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* Form Styles */
-.edit-hive-form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #555;
-}
-
-input[type="number"],
-select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-/* Button Styles */
-.btn {
-    padding: 10px;
-    background-color: #4CAF50; /* Green */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.btn:hover {
-    background-color: #45a049; /* Darker green */
-}
-button {
-  background-color: #4CAF50; /* Green background */
-  border: none; /* Remove default border */
-  color: white; /* White text */
-  padding: 10px 20px; /* Add some padding */
-  text-align: center; /* Center text */
-  text-decoration: none; /* Remove underline */
-  display: inline-block; /* Inline element */
-  font-size: 16px; /* Set font size */
-  margin: 10px 0; /* Add some space around the button */
-  cursor: pointer; /* Pointer cursor on hover */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s ease; /* Smooth transition for hover */
-}
-
-button:hover {
-  background-color: #45a049; /* Darker green on hover */
-}
-
-
-/* Responsive Design */
-@media (max-width: 480px) {
-    .container {
-        width: 90%; /* Adjust width on small screens */
-    }
-}
-</style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('/images/pic6.png');
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    
+        .back-link {
+            position: absolute; 
+            top: 20px;
+            left: 200px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 18px;
+            color: #f7f6f5;
+            font-weight: bold;
+            background-color: #ee9d07;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #141414; 
+        }
+        .back-link span {
+            margin-left: 5px;
+        }
+        .container {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .edit-hive-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"],
+        select {
+            padding: 10px;
+            border: 1px solid #fffefe;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ee9d07;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #fa9704;
+        }
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
 </head>
 <body>
+    <a href="/hive-details" class="back-link">
+        ← <span>Back</span>
+    </a>
+
     <div class="container">
-        <h1>Edit Hive Details</h1>
+        <h1>Hive No: <%= hive.hive_no %></h1>
         <form action="/update-hive" method="POST" class="edit-hive-form">
             <input type="hidden" name="hive_no" value="<%= hive.hive_no %>">
             
@@ -146,11 +145,14 @@ button:hover {
                 <input type="number" name="bees_out" value="<%= hive.bees_out %>" required>
             </div>
 
-            <button type="submit" class="btn">Save Changes</button>
-            <button id="viewHistoryBtn" type="button" onclick="window.location.href='/view-history/<%= hive.hive_no %>'">View History</button>
-
-
+            <!-- Buttons in the same line -->
+            <div class="button-group">
+                <button type="submit" class="btn">Save Changes</button>
+                <button id="viewHistoryBtn" type="button" onclick="window.location.href='/view-history/<%= hive.hive_no %>'">View History</button>
+            </div>
         </form>
     </div>
 </body>
 </html>
+
+

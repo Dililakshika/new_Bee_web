@@ -5,7 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hive Edit History</title>
     <style>
-        /* Add some table styling */
+        body {
+            background-image: url('/images/pic5.png'); 
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        font-family: Arial, sans-serif; 
+        margin: 0; 
+        padding: 0; 
+    }
+
+    h1 {
+        text-align: center; 
+        color: rgb(10, 10, 10); 
+        margin-top: 20px;
+    
+    }
+    
         table {
             width: 100%;
             border-collapse: collapse;
@@ -13,7 +29,7 @@
         }
 
         table, th, td {
-            border: 1px solid #ddd;
+            border: 1px solid #fcfcf8;
         }
 
         th, td {
@@ -22,21 +38,13 @@
         }
 
         th {
-            background-color: #4CAF50;
+            background-color: #f09d05;
             color: white;
-        }
-
-        .edit-btn {
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
         }
     </style>
 </head>
 <body>
+    
     <h1>History for Hive <%= hive_no %></h1>
 
     <table>
@@ -50,7 +58,6 @@
                 <th>Active Status</th>
                 <th>Bees In</th>
                 <th>Bees Out</th>
-                <th>Edit</th>
             </tr>
         </thead>
         <tbody>
@@ -64,7 +71,6 @@
                 <td><%= entry.active_status %></td>
                 <td><%= entry.bees_in %></td>
                 <td><%= entry.bees_out %></td>
-                <td><a href="/edit-history/<%= entry.id %>"><button class="edit-btn">Edit</button></a></td>
             </tr>
             <% }) %>
         </tbody>
