@@ -5,170 +5,261 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maintenance Report</title>
     <style>
-        /* Basic styling for layout and form */
+        
         body {
-            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-image: url('/images/pic7.png');
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f9f9f9;
-        }
-
-        .container {
-            max-width: 600px;
-            margin-top: 50px;
+            gap: 20px;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .report-container {
+            width: 90%;
+            max-width: 700px;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in-out;
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .report-section {
-            margin-top: 20px;
-        }
-
-        .report-section label {
+        .back-link {
+            position: absolute; 
+            top: 20px;
+            left: 100px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 18px;
+            color: #f7f6f5;
             font-weight: bold;
+            background-color: #ee9d07;
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            
+        }
+        .back-link:hover {
+            color: #141414; 
+        }
+        .back-link span {
+            margin-left: 5px;
+        }
+
+        .header-container {
+            text-align: center;
+            background: #ffb74d;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-bottom: 5px solid #ff9800;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .details-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            width: 90%;
+            max-width: 700px;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .details-container label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #b5651d;
             margin-bottom: 5px;
         }
 
-        .report-section textarea {
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-container div {
+            font-size: 1rem;
+            color: #5a5a5a;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .report-container label {
+            font-weight: bold;
+            color: #b5651d;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+
+        .report-container textarea {
             width: 100%;
             height: 150px;
             padding: 10px;
-            margin-top: 10px;
+            border: 1px solid #ffecb3;
+            border-radius: 10px;
             font-size: 1rem;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            background: #ffecb3;
             resize: vertical;
         }
 
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+        .report-container textarea:focus {
+            outline: none;
+            border-color: #ff9800;
+            box-shadow: 0 0 5px rgba(255, 152, 0, 0.5);
         }
 
-        .buttons button {
-            padding: 10px 20px;
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .buttons-container button {
+            flex: 1;
+            padding: 15px;
             font-size: 1rem;
+            font-weight: bold;
+            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .save-button {
-            background-color: #4CAF50;
-            color: #fff;
+            background: #ff9800;
+        }
+
+        .save-button:hover {
+            background: #e68a00;
         }
 
         .view-button {
-            background-color: #007BFF;
-            color: #fff;
+            background: #b5651d;
+        }
+
+        .view-button:hover {
+            background: #8c4314;
         }
 
         #messageContainer {
-            margin-top: 15px;
-            color: green;
-            display: none;
+            font-size: 1rem;
+            font-weight: bold;
             text-align: center;
+            color: #4CAF50;
+            display: none;
         }
     </style>
 </head>
 <body>
+    <a href="/maintanace" class="back-link">
+        ← <span>Back</span>
+    </a>
 
-<div class="container">
-    <h1>Maintenance Report</h1>
+<!-- Header Section -->
+<div class="header-container">
+    Maintenance Report
+</div>
 
-    <div class="report-section">
+<!-- Hive and Task Details -->
+<div class="details-container">
+    <div class="detail-item">
         <label>Hive Number:</label>
         <div id="hiveNumberDisplay"></div>
-
+    </div>
+    <div class="detail-item">
         <label>Task Type:</label>
         <div id="taskTypeDisplay"></div>
     </div>
-
-    <div class="report-section">
-        <label for="reportContent">Report Content:</label>
-        <textarea id="reportContent" placeholder="Enter your report details here..."></textarea>
-    </div>
-
-    <div class="buttons">
-        <button class="save-button" onclick="saveReport()">Save Report</button>
-        <button class="view-button" onclick="viewReport()">View Report</button>
-    </div>
-
-    <div id="messageContainer"></div>
 </div>
 
+<!-- Report Section -->
+<div class="report-container">
+    <label for="reportContent">Report Content:</label>
+    <textarea id="reportContent" placeholder="Describe the task and maintenance performed..."></textarea>
+</div>
+
+<!-- Buttons Section -->
+<div class="buttons-container">
+    <button class="save-button" onclick="saveReport()">Save Report</button>
+    <button class="view-button" onclick="viewReport()">View Report</button>
+</div>
+
+<!-- Success Message -->
+<div id="messageContainer"></div>
+
 <script>
-// Function to get URL parameters
-function getParameterByName(name) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(name);
-}
+    // Existing JavaScript functionality
+    function getParameterByName(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
 
-// Display hive number and task type from URL parameters
-document.getElementById('hiveNumberDisplay').innerText = getParameterByName('hiveNo');
-document.getElementById('taskTypeDisplay').innerText = getParameterByName('taskType');
+    document.getElementById('hiveNumberDisplay').innerText = getParameterByName('hiveNo');
+    document.getElementById('taskTypeDisplay').innerText = getParameterByName('taskType');
 
-// Save report function
-function saveReport() {
-    const hiveNo = getParameterByName('hiveNo');
-    const taskType = getParameterByName('taskType');
-    const reportContent = document.getElementById('reportContent').value;
+    function saveReport() {
+        const hiveNo = getParameterByName('hiveNo');
+        const taskType = getParameterByName('taskType');
+        const reportContent = document.getElementById('reportContent').value;
 
-    const reportData = {
-        hive_no: hiveNo,
-        task_type: taskType,
-        report_content: reportContent
-    };
+        const reportData = { hive_no: hiveNo, task_type: taskType, report_content: reportContent };
 
-    // Send report data to the backend
-    fetch('/saveReport', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(reportData)
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            displayMessage("Report saved successfully!");
-        } else {
-            displayMessage("Failed to save report. Try again.");
-        }
-    })
-    .catch(error => console.error('Error:', error));
-}
+        fetch('/saveReport', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reportData)
+        })
+        .then(response => response.json())
+        .then(result => {
+            displayMessage(result.success ? "Report saved successfully!" : "Failed to save report. Try again.");
+        })
+        .catch(error => console.error('Error:', error));
+    }
 
-// Display a message
-function displayMessage(message) {
-    const messageContainer = document.getElementById('messageContainer');
-    messageContainer.innerText = message;
-    messageContainer.style.display = "block";
-    setTimeout(() => {
-        messageContainer.style.display = "none";
-    }, 3000);
-}
+    function displayMessage(message) {
+        const messageContainer = document.getElementById('messageContainer');
+        messageContainer.innerText = message;
+        messageContainer.style.display = "block";
+        setTimeout(() => { messageContainer.style.display = "none"; }, 3000);
+    }
 
-// View report function
-function viewReport() {
-    const hiveNo = getParameterByName('hiveNo');
-    const taskType = getParameterByName('taskType');
-    
-    // Redirect to a page to view the report or send a request to get the report details
-    window.location.href = `/viewReport?hiveNo=${hiveNo}&taskType=${taskType}`;
-}
-
+    function viewReport() {
+        const hiveNo = getParameterByName('hiveNo');
+        const taskType = getParameterByName('taskType');
+        window.location.href = `/viewReport?hiveNo=${hiveNo}&taskType=${taskType}`;
+    }
 </script>
-
 </body>
 </html>
+
+
+
 

@@ -11,87 +11,63 @@
       background: url('/images/pic5.png') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
-      padding: 20px;
-      display: flex;
+      padding:0;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items:flex-start;
+      flex-direction: column;
+      
+      
     }
     .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(253, 253, 253, 0.979);
-    padding: 5px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 1000;
+           position: fixed;
+           top: 0;
+           left: 0;
+           width: 100%;
+           background: linear-gradient(to right, #ffa500, #ff4500);
+           padding: 4px 0;
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+           z-index: 1000;
+        }
+        .navbar ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          align-items: center;
+        }
+        .navbar li {
+          margin: 0 25px;
+        }
+        .navbar a {
+          text-decoration: none;
+          color: #000;
+          font-weight: bold;
+          font-size: 16px;
+          transition: color 0.3s;
+        }
+        .navbar a:hover {
+          color: #fcfbfb;
+        }
+        .container {
+  width: 92.6%;
+  background: linear-gradient(to right, #ffa500, #ff4500);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  padding: 50px;
+  margin-top: 0;
 }
 
-.navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    margin-left: 650px;
-}
-
-.navbar li {
-    margin: 0 35px;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: #000;
-    font-weight: bold;
-    font-size: 16px;
-    transition: color 0.3s;
-}
-
-.navbar a:hover {
-    color: #FFA500;
-}
-.logout-icon {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-right: 30px;
-    text-decoration: none;
-}
-
-.logout-icon img {
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-
-.logout-icon:hover img {
-    transform: scale(1.1); /* Slight zoom-in on hover */
-}
-
-.logout-text {
-    position: absolute;
-    top: 50px; /* Adjust depending on the icon size */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8); /* Dark background for the tooltip */
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-.logout-icon:hover .logout-text {
-    opacity: 1; /* Show tooltip on hover */
-}
-
-
+.container h1 {
+            color: #141414;
+            font-family: "Arial Black", Gadget, sans-serif;
+            font-size: 40px;
+            text-shadow: 1px 1px 3px rgba(255, 254, 254, 0.5); 
+        }
     .report-container {
       text-align: center;
+      margin-top: 150px;
     }
 
     .hive-numbers {
@@ -142,14 +118,13 @@
   <div class="navbar">
     <img src="/images/logo.png" alt="Bee Smart" style="width: 100px; height: auto; margin-left: 20px;">
     <ul>
-        <li><a href="#home">Home</a></li> <!-- #home will scroll to the home section -->
-        <li><a href="#dashboard">Dashboard</a></li> <!-- #dashboard will scroll to the dashboard section -->
-        <li><a href="#contact">Contact</a></li> 
+      <li><a href="/#home">Home</a></li>
+      <li><a href="/#dashboard">Dashboard</a></li>
+      <li><a href="/#contact">Contact</a></li>
     </ul>
-    <a href="/logout" class="logout-icon">
-        <img src="/images/logout.png" alt="Logout" style="width: 30px; height: 30px; margin-right: 20px;">
-        <span class="logout-text">Log Out</span>
-    </a>
+</div>
+<div class="container">
+  <h1>Report</h1>
 </div>
   <div class="report-container">
     <div class="hive-numbers" id="hiveNumbers">

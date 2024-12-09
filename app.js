@@ -149,14 +149,15 @@ app.get('/harvest', isAuthenticated, (req, res) => {
   res.render('harvest.html');
 });
 
+app.get('/hive-report', isAuthenticated, (req, res) => {
+  res.render('hive-report.html');
+});
+
 // Serve the index, home, dashboard, or contact pages
 app.get(['/', '/home', '/dashboard', '/contact'], (req, res) => {
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
-app.get('/hive-report', isAuthenticated, (req, res) => {
-  res.render('hive-report.html');
-});
 
 // Logout route
 app.get('/logout', (req, res) => {
@@ -197,8 +198,17 @@ app.get('/view-history/:hive_no', isAuthenticated, (req, res) => {
           console.error(err);
           return res.status(500).send('Error retrieving hive history');
       }
+      const formattedResults = results.map(entry => {
+        const dateObj = new Date(entry.updated_at);
+        const formattedDate = dateObj.toISOString().split('T')[0]; // YYYY-MM-DD
+        const formattedTime = dateObj.toTimeString().split(' ')[0]; // HH:MM:SS
+        return {
+            ...entry,
+            updated_at: `${formattedDate}    ${formattedTime}` // Combine formatted date and time
+        };
+    });
 
-      res.render('view-history', { history: results, hive_no: hiveNo });
+    res.render('view-history', { history: formattedResults, hive_no: hiveNo });
   });
 });
 
@@ -400,8 +410,6 @@ app.get('/api/hive-reports', (req, res) => {
     res.json(results);
   });
 });
-
-
 
 
 // Start the server
