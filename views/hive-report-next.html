@@ -8,8 +8,8 @@
   <style>
     /* General styles */
     body {
-      font-family: 'Arial', sans-serif;
-      background: linear-gradient(to bottom, #f0f5da, #e4b267);
+      font-family: 'Roboto', sans-serif;
+      background: radial-gradient(circle, #fff7e6, #f5c77a);
       color: #333;
       margin: 0;
       padding: 0;
@@ -17,14 +17,18 @@
 
     /* Header styles */
     .header {
-      padding: 20px;
+      background-color: #ffd54f;
+      color: #111;
+      padding: 20px 40px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-radius: 0 0 20px 20px;
     }
 
     .header h2 {
-      font-size: 18px;
+      font-size: 22px;
       margin: 0;
     }
 
@@ -35,83 +39,101 @@
     }
 
     .status span {
-      margin-left: 8px;
       font-weight: bold;
     }
 
     .status .circle {
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
-      margin-right: 8px;
+      margin-right: 10px;
     }
 
     .status .active {
-      background-color: green;
+      background-color: #4caf50;
     }
 
     .status .inactive {
-      background-color: red;
-    }
-
-    hr {
-      border: none;
-      height: 2px;
-      background: #ccc;
-      margin: 0;
+      background-color: #e57373;
     }
 
     /* Main layout */
     .main-content {
       display: flex;
       justify-content: space-between;
-      padding: 20px;
+      padding: 30px;
+      gap: 20px;
     }
 
     /* Left side: Metrics */
     .metrics-section {
-      width: 20%;
-      padding: 10px;
-      margin-left: 50px;
-      margin-top: 40px;
+      flex: 1;
+      padding: 20px;
+      
     }
 
-    .metric-item {
-      margin-bottom: 15px;
+    .metrics-section h3 {
+      text-align: center;
       font-size: 20px;
-      font-weight: bold;
-    }
-
-    .metric-item span {
-      font-weight: normal;
+      margin-bottom: 15px;
       color: #555;
     }
 
-    /* Right side: Report content */
-    .report-section {
-      width: 60%;
-      background: rgba(255, 255, 255, 0.3);
-      padding: 25px;
-    }
-    .report-section h1 {
-      font-size: 25px;
-      color: #111111;
-      margin-bottom: 6px;
-      text-align: center;
+    .metric-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ffd54f, #ffe082);
+      color: #222;
+      font-weight: bold;
     }
 
-    .report-section h3 {
-      font-size: 18px;
+    /* Right side: Report Section */
+    .report-section {
+      flex: 2;
+      background-color: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .report-section h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
       color: #333;
+    }
+
+    .report-category {
+      margin-bottom: 20px;
+    }
+
+    .report-category h3 {
+      font-size: 20px;
       margin-bottom: 10px;
+      color: #444;
     }
 
     .report-box {
+      background: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
       padding: 15px;
-      background-color: #fff;
-      border-radius: 8px;
-      margin-bottom: 18px;
-      margin-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .report-box p {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #555;
+    }
+
+    .report-box span {
+      font-size: 14px;
+      color: #999;
     }
 
     @media (max-width: 768px) {
@@ -126,7 +148,6 @@
     }
   </style>
 </head>
-
 <body>
   <!-- Header Section -->
   <div class="header">
@@ -137,12 +158,12 @@
       <span id="status"></span>
     </div>
   </div>
-  <hr />
 
   <!-- Main Content -->
   <div class="main-content">
     <!-- Left Side: Metrics -->
     <div class="metrics-section">
+      
       <div class="metric-item">
         Temperature: <span id="temperature"></span>
       </div>
@@ -162,17 +183,23 @@
 
     <!-- Right Side: Report Section -->
     <div class="report-section">
-    <h1> Report</h1>
-      <h3>Daily</h3>
-      <div id="dailyReport" class="report-box"></div>
-
-      <h3>Weekly </h3>
-      <div id="weeklyReport" class="report-box"></div>
-
-      <h3>Monthly </h3>
-      <div id="monthlyReport" class="report-box"></div>
+      <h1>Hive Reports</h1>
+    
+      <div class="report-category">
+        <h3>Daily Reports</h3>
+        <div id="dailyReport" class="report-box"></div>
+      </div>
+    
+      <div class="report-category">
+        <h3>Weekly Reports</h3>
+        <div id="weeklyReport" class="report-box"></div>
+      </div>
+    
+      <div class="report-category">
+        <h3>Monthly Reports</h3>
+        <div id="monthlyReport" class="report-box"></div>
+      </div>
     </div>
-  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -197,20 +224,43 @@
 
       // Fetch hive reports
       fetch(`http://localhost:3000/api/hive-reports?hive_no=${hiveNo}`)
-        .then(response => response.json())
-        .then(reports => {
-          reports.forEach(report => {
-            const reportContainer = document.getElementById(`${report.task_type}Report`);
-            const reportContent = document.createElement('p');
-            reportContent.textContent = report.report_content;
-            reportContainer.appendChild(reportContent);
-          });
-        })
-        .catch(error => console.error('Error fetching hive reports:', error));
-    });
+      .then(response => response.json())
+      .then(reports => {
+        reports.forEach(report => {
+          const reportContainer = document.getElementById(`${report.task_type}Report`);
+
+          // Create a container for each report
+          const reportContent = document.createElement('div');
+          reportContent.style.marginBottom = '15px';
+
+          // Format the date to YYYY-MM-DD
+          const reportDate = document.createElement('p');
+          const formattedDate = new Date(report.report_date).toISOString().split('T')[0];
+          reportDate.textContent = formattedDate;
+          reportDate.style.fontWeight = 'bold';
+          reportDate.style.color = '#333';
+
+          // Add the report content
+          const reportDetails = document.createElement('p');
+          reportDetails.textContent = report.report_content;
+          reportDetails.style.marginTop = '5px';
+          reportDetails.style.color = '#555';
+
+          // Append the date and content to the report container
+          reportContent.appendChild(reportDate);
+          reportContent.appendChild(reportDetails);
+
+          // Append the report container to the appropriate section
+          reportContainer.appendChild(reportContent);
+        });
+      })
+      .catch(error => console.error('Error fetching hive reports:', error));
+  });
   </script>
 </body>
 </html>
+
+
 
 
 

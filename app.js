@@ -308,13 +308,13 @@ app.post('/saveTasks', (req, res) => {
   let query = '';
   let queryValues = [];
 
-  if (taskType === 'daily') {
+  if (taskType === 'Daily') {
       query = 'INSERT INTO hive_tasks (hive_no, task_type, task_date, task_list) VALUES (?, ?, ?, ?)';
       queryValues = [hiveNo, taskType, dateValue, taskList];
-  } else if (taskType === 'weekly') {
+  } else if (taskType === 'Weekly') {
       query = 'INSERT INTO hive_tasks (hive_no, task_type, task_week, task_list) VALUES (?, ?, ?, ?)';
       queryValues = [hiveNo, taskType, dateValue, taskList]; // weekly date in YYYY-WW format
-  } else if (taskType === 'monthly') {
+  } else if (taskType === 'Monthly') {
       query = 'INSERT INTO hive_tasks (hive_no, task_type, task_month, task_list) VALUES (?, ?, ?, ?)';
       queryValues = [hiveNo, taskType, dateValue, taskList]; // monthly date in YYYY-MM format
   }
@@ -372,7 +372,7 @@ app.get('/viewReport', (req, res) => {
 // Route to get all reports from the hive_reports table
 app.get('/getAllReports', (req, res) => {
   // SQL query to fetch all reports from the table
-  const sql = 'SELECT * FROM hive_reports ORDER BY report_date DESC';
+  const sql = 'SELECT * FROM hive_reports ORDER BY hive_no ASC';
   db.query(sql, (error, results) => {
       if (error) {
           console.error('Error fetching reports:', error);

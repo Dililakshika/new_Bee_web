@@ -115,6 +115,10 @@
         .report-table tr:hover {
             background-color: #FFEEB5;
         }
+        .report-table th:nth-child(3),
+    .report-table td:nth-child(3) {
+        width: 50%; /* Adjust percentage to allocate more space */
+    }
 
         
     </style>
@@ -214,9 +218,10 @@
 
             reports.forEach(report => {
                 const row = document.createElement('tr');
+                const formattedDate = new Date(report.report_date).toISOString().split('T')[0]; // Format the date to YYYY-MM-DD
                 row.innerHTML = `
                     <td>${report.hive_no}</td>
-                    <td>${report.report_date}</td>
+                    <td>${formattedDate}</td>
                     <td>${report.report_content}</td>
                 `;
                 tableBody.appendChild(row);

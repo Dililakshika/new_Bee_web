@@ -247,13 +247,13 @@
 
     <!-- Maintenance Options -->
     <div class="maintenance-boxes">
-        <div class="box daily" onclick="openModal('daily')">
+        <div class="box daily" onclick="openModal('Daily')">
             <h2>Daily</h2>
         </div>
-        <div class="box weekly" onclick="openModal('weekly')">
+        <div class="box weekly" onclick="openModal('Weekly')">
             <h2>Weekly</h2>
         </div>
-        <div class="box monthly" onclick="openModal('monthly')">
+        <div class="box monthly" onclick="openModal('Monthly')">
             <h2>Monthly</h2>
         </div>
     </div>
@@ -263,15 +263,15 @@
     </div>
 
     <!-- Daily Modal -->
-    <div class="modal" id="dailyModal">
+    <div class="modal" id="DailyModal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('dailyModal')">&times;</span>
+            <span class="close" onclick="closeModal('DailyModal')">&times;</span>
             <h2>Daily Maintenance</h2>
             <form id="dailyForm">
                 <label for="date">Date:</label>
                 <input type="date" id="dailyDate" required><br><br>
 
-                <label for="hiveNo">Hive No:</label>
+                <label for="hiveNo">Hive No.:</label>
                 <input type="number" id="dailyHiveNo" required><br><br>
 
                 <button type="submit">Next</button>
@@ -280,12 +280,12 @@
     </div>
 
     <!-- Weekly Modal -->
-    <div class="modal" id="weeklyModal">
+    <div class="modal" id="WeeklyModal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('weeklyModal')">&times;</span>
+            <span class="close" onclick="closeModal('WeeklyModal')">&times;</span>
             <h2>Weekly Maintenance</h2>
             <form id="weeklyForm">
-                <label for="week">Week:</label>
+                <label for="week">Select Week:</label>
                 <input type="week" id="weeklyDate" required><br><br>
 
                 <label for="hiveNo">Hive No.:</label>
@@ -297,12 +297,12 @@
     </div>
 
     <!-- Monthly Modal -->
-    <div class="modal" id="monthlyModal">
+    <div class="modal" id="MonthlyModal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('monthlyModal')">&times;</span>
+            <span class="close" onclick="closeModal('MonthlyModal')">&times;</span>
             <h2>Monthly Maintenance</h2>
             <form id="monthlyForm">
-                <label for="month">Month:</label>
+                <label for="month">Select Month:</label>
                 <input type="month" id="monthlyDate" required><br><br>
 
                 <label for="hiveNo">Hive No.:</label>
@@ -346,19 +346,19 @@ function closeModal(modalId) {
 document.getElementById('dailyForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const hiveNo = document.getElementById("dailyHiveNo").value;
-    showTaskModal(hiveNo, 'daily');
+    showTaskModal(hiveNo, 'Daily');
 });
 
 document.getElementById('weeklyForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const hiveNo = document.getElementById("weeklyHiveNo").value;
-    showTaskModal(hiveNo, 'weekly');
+    showTaskModal(hiveNo, 'Weekly');
 });
 
 document.getElementById('monthlyForm').addEventListener('submit', function (event) {
     event.preventDefault();
     const hiveNo = document.getElementById("monthlyHiveNo").value;
-    showTaskModal(hiveNo, 'monthly');
+    showTaskModal(hiveNo, 'Monthly');
 });
 
 // Show the task modal based on the mode
@@ -366,7 +366,7 @@ function showTaskModal(hiveNo, mode) {
     document.getElementById('hiveNoDisplay').innerText = `Hive No: ${hiveNo}`;
     let taskListHtml = '';
 
-    if (mode === 'daily') {
+    if (mode === 'Daily') {
         document.getElementById('taskModalTitle').innerText = "Daily Maintenance Tasks";
         taskListHtml = `
             <label><input type="checkbox"> Monitor bee activity</label>
@@ -376,7 +376,7 @@ function showTaskModal(hiveNo, mode) {
             <label><input type="checkbox"> Check water supply</label>
             <label><input type="checkbox"> Observe bee behavior</label>
         `;
-    } else if (mode === 'weekly') {
+    } else if (mode === 'Weekly') {
         document.getElementById('taskModalTitle').innerText = "Weekly Maintenance Tasks";
         taskListHtml = `
             <label><input type="checkbox"> Inspect hive interior</label>
@@ -386,7 +386,7 @@ function showTaskModal(hiveNo, mode) {
             <label><input type="checkbox"> Provide supplemental feeding</label>
             <label><input type="checkbox"> Check hive ventilation</label>
         `;
-    } else if (mode === 'monthly') {
+    } else if (mode === 'Monthly') {
         document.getElementById('taskModalTitle').innerText = "Monthly Maintenance Tasks";
         taskListHtml = `
             <label><input type="checkbox"> Inspect hive frames and clean equipment</label>
@@ -432,11 +432,11 @@ function saveTasks() {
     const taskType = currentMode;
     let dateValue;
 
-    if (taskType === 'daily') {
+    if (taskType === 'Daily') {
         dateValue = document.getElementById('dailyDate').value;
-    } else if (taskType === 'weekly') {
+    } else if (taskType === 'Weekly') {
         dateValue = document.getElementById('weeklyDate').value;
-    } else if (taskType === 'monthly') {
+    } else if (taskType === 'Monthly') {
         dateValue = document.getElementById('monthlyDate').value;
     }
 
