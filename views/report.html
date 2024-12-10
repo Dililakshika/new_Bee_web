@@ -36,29 +36,28 @@
             }
         }
 
-        .back-link {
-            position: absolute; 
+        .close-btn {
+            position: absolute;
             top: 20px;
-            left: 100px;
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            font-size: 18px;
-            color: #f7f6f5;
+            right: 30px;
+            background-color: #f89615;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
             font-weight: bold;
-            background-color: #ee9d07;
-            padding: 10px 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            
-        }
-        .back-link:hover {
-            color: #141414; 
-        }
-        .back-link span {
-            margin-left: 5px;
+            text-align: center;
+            cursor: pointer;
+            line-height: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        .close-btn:hover {
+            background-color: #d32f2f;
+        }
+    
         .header-container {
             text-align: center;
             background: #ffb74d;
@@ -179,9 +178,7 @@
     </style>
 </head>
 <body>
-    <a href="/maintanace" class="back-link">
-        ← <span>Back</span>
-    </a>
+    <button class="close-btn" onclick="closePage()">×</button>
 
 <!-- Header Section -->
 <div class="header-container">
@@ -216,6 +213,11 @@
 <div id="messageContainer"></div>
 
 <script>
+    
+        function closePage() {
+            history.back();
+        }
+    
     // Existing JavaScript functionality
     function getParameterByName(name) {
         const urlParams = new URLSearchParams(window.location.search);

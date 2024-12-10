@@ -5,80 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Maintenance Reports</title>
     <style>
-        /* Basic styling */
+        /* Base Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #fffcdd;
+            color: #333;
         }
 
+        /* Header Section */
         .header {
-            display:flex;
-    justify-content: space-between;
-    background: linear-gradient(90deg, #ff7e00, #ffbb33);
-    padding: 0;
-    color: white;
-}
+            background: linear-gradient(90deg, #FFB347, #FFCC33);
+            color: rgb(255, 255, 255);
+            text-align: center;
+            padding: 30px 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.header img {
-    height: 280px;
-    width: 550px;
-    margin-right: 20px;
-    object-fit: cover;
-    clip-path: polygon(0 0, 100% 0, 75% 100%, 0% 100%);
-}
-.header-content {
-    margin-right: 10; /* Ensure there is no extra margin pushing content to the right */
-    padding-right: 300px; 
-}
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            padding: 10px 0;
+            letter-spacing: 1px;
+            color: #0c0c0c;
+        }
 
-.header h1 {
-    margin: 0;
-    font-size: 3em;
-    margin-bottom: 80px;
-}
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: rgb(12, 12, 12);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            line-height: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-.header > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+        .close-btn:hover {
+            background-color: #d32f2f;
+        }
 
-.tabs {
-    display: flex;
-    gap: 40px;
-    margin-top: 10px; /* Adjust this to control the space between the h1 and tabs */
-}
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 20px;
+        }
 
-.tab {
-    margin: 0 15px;
-    font-size: 1.2em;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    position: relative;
-}
-.tab:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -30px; /* Adjust the distance from the tab text */
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background-color: #fdfbfb; /* Color of the vertical line */
-}
+        .tab {
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-.tab.active {
-    color: black;
-    text-decoration: underline;
-}
+        .tab.active {
+            background-color: #fff;
+            color: #FFB347;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
+        .tab:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #FFB347;
+        }
 
         .report-section {
             display: none;
-            padding: 40px;
-            margin-left: 250px;
+            padding: 40px 15px;
+            max-width: 900px;
+            margin: 20px auto;
+            
         }
 
         .report-section.active {
@@ -87,38 +93,43 @@
 
         .report-table {
             width: 100%;
-            max-width: 800px;
             border-collapse: collapse;
-            margin-top: 20px;
-            background-color: #fff;
-           
         }
 
-        .report-table th, .report-table td {
+        .report-table th,
+        .report-table td {
+            padding: 12px 15px;
             border: 1px solid #ddd;
-            padding: 10px;
             text-align: left;
         }
 
         .report-table th {
-            background-color: #f76612d7;
+            background-color: #ff8820;
             color: white;
         }
+
+        .report-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .report-table tr:hover {
+            background-color: #FFEEB5;
+        }
+
+        
     </style>
 </head>
 <body>
+    <button class="close-btn" onclick="closePage()">×</button>
     <div class="header">
-        <img src="/images/main.jpg" alt="Beekeeping Image">
-        <div class="header-content">
-            <h1>Maintenance Report</h1>
-            <div class="tabs">
-                <div class="tab active" onclick="showSection('daily')">Daily</div>
-                <div class="tab" onclick="showSection('weekly')">Weekly</div>
-                <div class="tab" onclick="showSection('monthly')">Monthly</div>
-            </div>
+        <h1>Maintenance Report</h1>
+        <div class="tabs">
+            <div class="tab active" onclick="showSection('daily')">Daily</div>
+            <div class="tab" onclick="showSection('weekly')">Weekly</div>
+            <div class="tab" onclick="showSection('monthly')">Monthly</div>
         </div>
     </div>
-
+   
     <div class="report-section active" id="dailyReportsSection">
         <table class="report-table" id="dailyReportsTable">
             <thead>
@@ -163,8 +174,14 @@
             </tbody>
         </table>
     </div>
+   
 
     <script>
+        
+        function closePage() {
+            history.back();
+        }
+   
         function showSection(section) {
             // Hide all sections
             document.querySelectorAll('.report-section').forEach(el => el.classList.remove('active'));
@@ -176,7 +193,6 @@
             document.querySelector(`.tab[onclick="showSection('${section}')"]`).classList.add('active');
         }
 
-        // Function to fetch and display all reports
         function loadReports() {
             fetch('/getAllReports')
                 .then(response => response.json())
@@ -209,9 +225,11 @@
 
         window.onload = loadReports;
     </script>
-
 </body>
 </html>
+
+
+
 
 
 

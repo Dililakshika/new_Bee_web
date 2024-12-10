@@ -14,6 +14,28 @@
         margin: 0; 
         padding: 0; 
     }
+    .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background-color: #f89615;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            line-height: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn:hover {
+            background-color: #d32f2f;
+        }
+    
 
     h1 {
         text-align: center; 
@@ -44,7 +66,7 @@
     </style>
 </head>
 <body>
-    
+    <button class="close-btn" onclick="closePage()">×</button>
     <h1>Hive <%= hive_no %></h1>
 
     <table>
@@ -75,7 +97,11 @@
             <% }) %>
         </tbody>
     </table>
-
+    <script>
+        function closePage() {
+            history.back();
+        }
+    </script>
 </body>
 </html>
 
